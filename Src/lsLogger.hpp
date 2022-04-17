@@ -1,17 +1,41 @@
 #ifndef _LOGGER_HPP_
 #define _LOGGER_HPP_
 
-#include <vector>
-#include <map>
-#include <string>
-#include <memory>
+#include <exception>
 #include <functional>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include <loggingsystem_export.h>
 
 namespace ls
 {
     class IOutput;
+
+    namespace Exceptions
+    {
+        class LOGGINGSYSTEM_EXPORT OutputIncorrectMsgTypes : public std::exception
+        {
+            public:
+                struct MsgData
+                {
+                    unsigned int mTypeId;
+                    std::string mOutputName;
+                };
+
+            public:
+                OutputIncorrectMsgTypes(const std::string& whatStr);
+
+                const char* what() const noexcept override;
+
+                static std::string constructWhatStr(const std::vector<MsgData>& vectorMsgData);
+
+            private:
+                const std::string mWhatString;
+        };
+    }
 
     class LOGGINGSYSTEM_EXPORT Logger
     {
@@ -27,8 +51,8 @@ namespace ls
             void setGetDateTimeAsStringCallback(GetDateTimeAsStringCallback callback);
 
         private:
-            std::map<unsigned int, std::string> mMsgTypes;
-            std::vector<std::shared_ptr<IOutput>> mOutputs;
+            std::map<unsigned int, std::string> mMapMsgTypes;
+            std::vector<std::shared_ptr<IOutput>> mVectorOutputs;
             std::function<GetDateTimeAsStringCallback> mGetDateTimeAsString;
     };
 }

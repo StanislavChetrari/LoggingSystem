@@ -34,3 +34,23 @@ std::string ls::ConsoleOutput::getName() const
 {
     return mName;
 }
+
+std::vector<unsigned int> ls::ConsoleOutput::getMessageTypes()
+{
+    std::vector<unsigned int> msgTypes;
+    for(auto iter = mMapMsgTypeToWriteCallback.begin(); iter != mMapMsgTypeToWriteCallback.end(); ++iter)
+    {
+        msgTypes.push_back(iter->first);
+    }
+    return msgTypes;
+}
+
+void ls::ConsoleOutput::setDefaultWriteCallback(const WriteMessageCallback& callback)
+{
+    mDefaultWriteCallback = callback;
+}
+
+void ls::ConsoleOutput::setWriteCallbackForMsgType(unsigned int msgType, const WriteMessageCallback& callback)
+{
+    mMapMsgTypeToWriteCallback.insert(std::make_pair(msgType, callback));
+}

@@ -2,6 +2,7 @@
 #define _I_OUTPUT_HPP_
 
 #include <string>
+#include <vector>
 
 namespace ls
 {
@@ -12,6 +13,8 @@ namespace ls
 
             virtual void setName(const std::string& name) = 0;
             virtual std::string getName() const = 0;
+
+            virtual std::vector<unsigned int> getMessageTypes() = 0;
     };
 }
 

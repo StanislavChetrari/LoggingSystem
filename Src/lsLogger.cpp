@@ -4,9 +4,30 @@
 
 #include "lsIOutput.hpp"
 
+ls::Exceptions::OutputIncorrectMsgTypes::OutputIncorrectMsgTypes(const std::string& whatStr)
+    : mWhatString(whatStr)
+{
+
+}
+
+const char* ls::Exceptions::OutputIncorrectMsgTypes::what() const noexcept
+{
+    return mWhatString.c_str();
+}
+
+std::string ls::Exceptions::OutputIncorrectMsgTypes::constructWhatStr(const std::vector<MsgData>& vectorMsgData)
+{
+    std::string whatString = "Exception OutputIncorrectMsgTypes. IOutput contains one or more invalid message types:\n";
+    for(const auto& data: vectorMsgData)
+    {
+        whatString += "Message type " + std::to_string(data.mTypeId) + " in output \"" + data.mOutputName + "\"\n";
+    }
+    return whatString;
+}
+
 ls::Logger::Logger(std::map<unsigned int, std::string> msgTypes, std::vector<std::shared_ptr<IOutput>> outputs)
-    : mMsgTypes(msgTypes)
-    , mOutputs(outputs)
+    : mMapMsgTypes(msgTypes)
+    , mVectorOutputs(outputs)
 {
     mGetDateTimeAsString = []()
     {
@@ -32,6 +53,29 @@ ls::Logger::Logger(std::map<unsigned int, std::string> msgTypes, std::vector<std
 
         return retStr;
     };
+
+    // Check if message types in outputs exist in msgTypes map.
+    std::vector<Exceptions::OutputIncorrectMsgTypes::MsgData> vectorMsgData;
+    for(const auto& output: outputs)
+    {
+        std::vector<unsigned int> outputMsgTypes = output->getMessageTypes();
+
+        for(const auto& outputMsgType: outputMsgTypes)
+        {
+            auto findIter = msgTypes.find(outputMsgType);
+            if(msgTypes.end() == findIter)
+            {
+                Exceptions::OutputIncorrectMsgTypes::MsgData data;
+                data.mOutputName = output->getName();
+                data.mTypeId = outputMsgType;
+                vectorMsgData.push_back(data);
+            }
+        }
+    }
+    if(0 < vectorMsgData.size())
+    {
+        throw Exceptions::OutputIncorrectMsgTypes(Exceptions::OutputIncorrectMsgTypes::constructWhatStr(vectorMsgData));
+    }
 }
 
 ls::Logger::~Logger()
@@ -43,17 +87,17 @@ void ls::Logger::log(unsigned int type, const std::string& msg) const
 {
     std::string dateTimeStr = mGetDateTimeAsString();
 
-    auto findIter = mMsgTypes.find(type);
-    if(mMsgTypes.end() != findIter)
+    auto findIter = mMapMsgTypes.find(type);
+    if(mMapMsgTypes.end() != findIter)
     {
-        for(const auto& output: mOutputs)
+        for(const auto& output: mVectorOutputs)
         {
             output->write(type, findIter->second, msg, dateTimeStr);
         }
     }
     else
     {
-        for(const auto& output: mOutputs)
+        for(const auto& output: mVectorOutputs)
         {
             output->write(type, "", msg, dateTimeStr);
         }
