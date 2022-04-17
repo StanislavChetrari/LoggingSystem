@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 #include <loggingsystem_export.h>
 
@@ -21,7 +22,7 @@ namespace ls
             public:
                 struct MsgData
                 {
-                    unsigned int mTypeId;
+                    uint32_t mTypeId;
                     std::string mOutputName;
                 };
 
@@ -43,15 +44,15 @@ namespace ls
             using GetDateTimeAsStringCallback = std::string();
 
         public:
-            Logger(std::map<unsigned int, std::string> msgTypes, std::vector<std::shared_ptr<IOutput>> outputs);
+            Logger(std::map<uint32_t, std::string> msgTypes, std::vector<std::shared_ptr<IOutput>> outputs);
             ~Logger();
 
-            void log(unsigned int msgType, const std::string& msg) const;
+            void log(uint32_t msgType, const std::string& msg) const;
 
             void setGetDateTimeAsStringCallback(GetDateTimeAsStringCallback callback);
 
         private:
-            std::map<unsigned int, std::string> mMapMsgTypes;
+            std::map<uint32_t, std::string> mMapMsgTypes;
             std::vector<std::shared_ptr<IOutput>> mVectorOutputs;
             std::function<GetDateTimeAsStringCallback> mGetDateTimeAsString;
     };

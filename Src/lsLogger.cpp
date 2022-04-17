@@ -25,7 +25,7 @@ std::string ls::Exceptions::OutputIncorrectMsgTypes::constructWhatStr(const std:
     return whatString;
 }
 
-ls::Logger::Logger(std::map<unsigned int, std::string> msgTypes, std::vector<std::shared_ptr<IOutput>> outputs)
+ls::Logger::Logger(std::map<uint32_t, std::string> msgTypes, std::vector<std::shared_ptr<IOutput>> outputs)
     : mMapMsgTypes(msgTypes)
     , mVectorOutputs(outputs)
 {
@@ -58,7 +58,7 @@ ls::Logger::Logger(std::map<unsigned int, std::string> msgTypes, std::vector<std
     std::vector<Exceptions::OutputIncorrectMsgTypes::MsgData> vectorMsgData;
     for(const auto& output: outputs)
     {
-        std::vector<unsigned int> outputMsgTypes = output->getMessageTypes();
+        std::vector<uint32_t> outputMsgTypes = output->getMessageTypes();
 
         for(const auto& outputMsgType: outputMsgTypes)
         {
@@ -83,7 +83,7 @@ ls::Logger::~Logger()
 
 }
 
-void ls::Logger::log(unsigned int type, const std::string& msg) const
+void ls::Logger::log(uint32_t type, const std::string& msg) const
 {
     std::string dateTimeStr = mGetDateTimeAsString();
 
