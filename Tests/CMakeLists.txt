@@ -1,0 +1,3 @@
+add_subdirectory(RunSmokeTest)
+add_subdirectory(OutputsHaveCorrectMessageTypes)
+add_subdirectory(ConsoleOutput)

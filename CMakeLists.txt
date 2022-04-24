@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 
-include(GenerateExportHeader)
-include(CMakeUtils/AddFile.cmake)
-
 project(LoggingSystem
 		VERSION 1.0
 		DESCRIPTION "Logging system to use in my private projects."
 		LANGUAGES CXX)
+
+include(GenerateExportHeader)
+include(CMakeUtils/AddFile.cmake)
+include(CTest)
 
 AddFile(SOURCE_FILES Src Src/lsLogger.cpp)
 AddFile(SOURCE_FILES Src Src/lsConsoleOutput.cpp)
@@ -22,3 +23,11 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR})
 generate_export_header(${CMAKE_PROJECT_NAME})
 
 target_compile_features(${CMAKE_PROJECT_NAME} PUBLIC cxx_std_11)
+
+# For the tests to link to the library.
+set(LOGGING_SYSTEM_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/Src\;${PROJECT_BINARY_DIR}")
+set(LOGGING_SYSTEM_TARGET_NAME ${CMAKE_PROJECT_NAME})
+
+if(BUILD_TESTING)
+    add_subdirectory(Tests)
+endif()
