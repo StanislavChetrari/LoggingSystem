@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-ls::ConsoleOutput::ConsoleOutput() :
-    mName("unnamed")
+ls::ConsoleOutput::ConsoleOutput()
+    : mName("unnamed")
 {
     mDefaultWriteCallback = [](uint32_t type, const std::string& typeName, const std::string& msg, const std::string& dateTimeStr)
     {
