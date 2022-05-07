@@ -3,11 +3,12 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <fstream>
 
 #include <lsLogger.hpp>
 #include <lsConsoleOutput.hpp>
 
-int main()
+int main(int argc, char** argv)
 {
     int retVal = 0;
 
@@ -22,18 +23,12 @@ int main()
         std::shared_ptr<ls::ConsoleOutput> output = std::make_shared<ls::ConsoleOutput>();
         output->setName("My console output");
 
-        output->setWriteCallbackForMsgType(0, [](uint32_t type, const std::string& typeName, const std::string& msg, const std::string& dateTimeStr)
-        {
-            std::cout << typeName << " : " << msg << std::endl;
-        });
-
         outputs.push_back(output);
     }
 
     try
     {
         ls::Logger logger(msgTypes, outputs);
-
         logger.log(0, "InfoMessage1");
         logger.log(1, "ErrorMessage2");
     }

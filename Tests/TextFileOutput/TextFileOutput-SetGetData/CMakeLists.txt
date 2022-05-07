@@ -1,9 +1,9 @@
-include(../../CMakeUtils/AddFile.cmake)
+include(../../../CMakeUtils/AddFile.cmake)
 
 AddFile(TEST_SOURCE_FILES Src Src/Main.cpp)
 AddFile(TEST_CMAKE_FILES "" RunTest.cmake)
 
-set(TEST_EXECUTABLE_NAME RunSmokeTest)
+set(TEST_EXECUTABLE_NAME TextFileOutput-SetGetData)
 
 add_executable(${TEST_EXECUTABLE_NAME} ${TEST_SOURCE_FILES} ${TEST_CMAKE_FILES})
 target_link_libraries(${TEST_EXECUTABLE_NAME} ${LOGGING_SYSTEM_TARGET_NAME})
