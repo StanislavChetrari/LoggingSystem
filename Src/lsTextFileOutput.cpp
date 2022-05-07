@@ -53,7 +53,7 @@ std::vector<uint32_t> ls::TextFileOutput::getMessageTypes()
     return msgTypes;
 }
 
-bool ls::TextFileOutput::open()
+bool ls::TextFileOutput::open(const std::string& filePath, FileOpenType fileOpenType)
 {
     std::ios_base::openmode openmode = std::ios_base::out | std::ios_base::binary;
     switch(mFileOpenType)
@@ -64,20 +64,34 @@ bool ls::TextFileOutput::open()
         }break;
     };
 
-    mFile.open(mFilePath, openmode);
-    return (bool)mFile;
-}
-
-bool ls::TextFileOutput::open(const std::string& filePath, FileOpenType fileOpenType)
-{
-    mFilePath = filePath;
-    mFileOpenType = fileOpenType;
-    return open();
+    mFile.open(filePath, openmode);
+    if((bool)mFile)
+    {
+        mFilePath = filePath;
+        mFileOpenType = fileOpenType;
+        return true;
+    }
+    else
+    {
+        mFilePath = "";
+        mFileOpenType = FileOpenType::NewOrOverwrite;
+        return false;
+    }
 }
 
 void ls::TextFileOutput::close()
 {
     mFile.close();
+}
+
+std::string ls::TextFileOutput::getFilePath() const
+{
+    return mFilePath;
+}
+
+ls::TextFileOutput::FileOpenType ls::TextFileOutput::getFileOpenType() const
+{
+    return mFileOpenType;
 }
 
 void ls::TextFileOutput::setDefaultWriteCallback(const WriteMessageCallback& callback)

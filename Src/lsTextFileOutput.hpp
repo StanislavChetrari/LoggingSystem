@@ -31,9 +31,11 @@ namespace ls
 
             std::vector<uint32_t> getMessageTypes() override;
 
-            bool open();
             bool open(const std::string& filePath, FileOpenType fileOpenType);
             void close();
+
+            std::string getFilePath() const;
+            FileOpenType getFileOpenType() const;
 
             void setDefaultWriteCallback(const WriteMessageCallback& callback);
             void setWriteCallbackForMsgType(uint32_t msgType, const WriteMessageCallback& callback);
