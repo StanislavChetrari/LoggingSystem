@@ -1,1 +1,1 @@
-./EnterDevShell.sh "qtcreator ../../CMakeLists.txt"
+qtcreator ../../CMakeLists.txt
