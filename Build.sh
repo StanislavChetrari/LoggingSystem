@@ -1,0 +1,3 @@
+cd Builds
+make
+cd ..
