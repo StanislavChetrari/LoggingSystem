@@ -36,6 +36,7 @@ set(LOGGING_SYSTEM_TARGET_NAME ${CMAKE_PROJECT_NAME})
 # ===============================================================================
 install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION lib)
 
+install(FILES "${PROJECT_BINARY_DIR}/loggingsystem_export.h" DESTINATION include)
 install(FILES Src/lsLogger.hpp DESTINATION include)
 install(FILES Src/lsIOutput.hpp DESTINATION include)
 install(FILES Src/lsConsoleOutput.hpp DESTINATION include)
