@@ -36,10 +36,10 @@ set(LOGGING_SYSTEM_TARGET_NAME ${CMAKE_PROJECT_NAME})
 # ===============================================================================
 install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION lib)
 
-install(FILES Src/lsLogger.hpp DESTINATION include/lsLogger.hpp)
-install(FILES Src/lsIOutput.hpp DESTINATION include/lsIOutput.hpp)
-install(FILES Src/lsConsoleOutput.hpp DESTINATION include/lsConsoleOutput.hpp)
-install(FILES Src/lsTextFileOutput.hpp DESTINATION include/lsTextFileOutput.hpp)
+install(FILES Src/lsLogger.hpp DESTINATION include)
+install(FILES Src/lsIOutput.hpp DESTINATION include)
+install(FILES Src/lsConsoleOutput.hpp DESTINATION include)
+install(FILES Src/lsTextFileOutput.hpp DESTINATION include)
 # ===============================================================================
 
 if(BUILD_TESTING)
